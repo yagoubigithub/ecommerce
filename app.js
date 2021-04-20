@@ -10,6 +10,7 @@ const expressValidator = require("express-validator")
 //import routes
 const authRoutes = require("./routes/auth")
 const userRoutes = require("./routes/user")
+const categoryRoutes = require("./routes/category")
 
 
 const app = express();
@@ -35,6 +36,7 @@ app.use(expressValidator())
 //routes midelware
 app.use("/api",authRoutes)
 app.use("/api",userRoutes)
+app.use("/api",categoryRoutes)
 
 
 
