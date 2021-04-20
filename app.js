@@ -8,8 +8,8 @@ const cookieParser = require("cookie-parser");
 const expressValidator = require("express-validator")
 
 //import routes
+const authRoutes = require("./routes/auth")
 const userRoutes = require("./routes/user")
-
 
 
 const app = express();
@@ -33,6 +33,7 @@ app.use(cookieParser());
 app.use(expressValidator())
 
 //routes midelware
+app.use("/api",authRoutes)
 app.use("/api",userRoutes)
 
 
