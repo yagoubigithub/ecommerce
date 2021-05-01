@@ -3,7 +3,7 @@ const router  = express.Router();
 
 
 
-const { create ,productById,read,remove , update,list, listRelated,listCategories,listBySearch} = require("../controllers/product")
+const { create ,productById,read,remove , update,list, listRelated,listCategories,listBySearch , photo} = require("../controllers/product")
 const {isAuth, isAdmin ,requireSignin} = require("../controllers/auth")
 const {userById} = require("../controllers/user")
 
@@ -20,6 +20,7 @@ router.get("/products/related/:productId", listRelated)
 router.get("/products/categories", listCategories)
 // route - make sure its post
 router.post("/products/by/search", listBySearch);
+router.get("/product/photo/:productId", photo);
 
 router.param("userId", userById);
 router.param("productId", productById);
