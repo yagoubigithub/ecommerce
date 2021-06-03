@@ -4,7 +4,7 @@ const braintree = require("braintree");
 
 require("dotenv").config();
 
-const getWay = new braintree.BraintreeGateway({
+const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BRAINTREE_MERCHANT_KEY,
   publicKey: process.env.BRAINTREE_PUBLIC_KEY,
@@ -12,7 +12,7 @@ const getWay = new braintree.BraintreeGateway({
 });
 
 exports.generateToken = (req, res) => {
-  getWay.clientToken.generate({}, (err, responce) => {
+  gateway.clientToken.generate({}, (err, responce) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -20,3 +20,29 @@ exports.generateToken = (req, res) => {
     }
   });
 };
+
+exports.processPayment = (req, res)=>{
+  let nonceFromTheClient = req.body.paymentMethodNonce;
+
+  let amountFromClient = req.body.amount;
+
+  //charge
+
+  let newTransaction = gateway.transaction.sale({
+    amount : amountFromClient,
+    paymentMethodNonce : nonceFromTheClient,
+    options : 
+      {
+        submitForSettlement : true
+      }
+    
+  } , (error , result)=>{
+
+    if(error){
+      res.status(500).json(error)
+    }else{
+      res.json(result)
+    }
+  })
+
+}
