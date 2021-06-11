@@ -61,7 +61,7 @@ exports.addOrderToUserHistory = (req, res, next) => {
               });
           }
 
-          console.log(history)
+        
           next();
       }
   );

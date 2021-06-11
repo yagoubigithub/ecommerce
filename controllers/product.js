@@ -295,7 +295,7 @@ exports.listSearch = (req, res)=>{
         // search and category
 
         Product.find(query,  (err, products)=>{
-            console.log(err)
+           
 
             if(err){
                 return res.status(400).json({
@@ -306,4 +306,28 @@ exports.listSearch = (req, res)=>{
             res.json(products)
         }).select('-photo')
     }
+}
+
+
+exports.decreaseQuantity = (req, res , next) => {
+
+    const bulkOps = req.body.order.products.map((item)=>{
+        return {
+            updateOne : {
+                filter : {_id : item._id},
+                update : {$inc : {quantity : -item.count, sold : +item.count}}
+            }
+        }
+
+    })
+
+    Product.bulkWrite(bulkOps , {} ,  (error , products)=>{
+        if(error){
+            return res.status(400).json({
+                error : "Could not update product"
+            })
+        }
+        next()
+
+    })
 }
